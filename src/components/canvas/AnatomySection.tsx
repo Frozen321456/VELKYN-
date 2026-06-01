@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
 import { Float, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import { useStore } from '../../store/useStore';
@@ -9,21 +8,19 @@ export const AnatomySection: React.FC = () => {
   const scrollProgress = useStore((state) => state.scrollProgress);
   const setHoveredAssetId = useStore((state) => state.setHoveredAssetId);
 
-  // Section 3: progress 0.5 -> 0.75
   const sectionProgress = (scrollProgress - 0.5) * 4;
 
   const assets = [
-    { id: 'gps', name: 'Real-time Tracking', color: '#00ffff', offset: [2, 1, 0] },
-    { id: 'hull', name: 'Safety & Insurance', color: '#ffd700', offset: [-2, 0, 1] },
-    { id: 'key', name: 'Customs Mastery', color: '#ffffff', offset: [0, -1, 2] },
+    { id: 'gps', name: 'Real-time Tracking', color: '#00ffff', offset: new THREE.Vector3(2, 1, 0) },
+    { id: 'hull', name: 'Safety & Insurance', color: '#ffd700', offset: new THREE.Vector3(-2, 0, 1) },
+    { id: 'key', name: 'Customs Mastery', color: '#ffffff', offset: new THREE.Vector3(0, -1, 2) },
   ];
 
   return (
     <group position={[0, 0, -10]}>
       <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
         <group ref={groupRef}>
-          {assets.map((asset, i) => {
-            // Explode logic based on section progress
+          {assets.map((asset) => {
             const currentOffset = new THREE.Vector3().copy(asset.offset).multiplyScalar(
               sectionProgress > 0 ? Math.min(sectionProgress * 2, 1) : 0
             );

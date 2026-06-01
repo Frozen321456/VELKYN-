@@ -12,17 +12,16 @@ export const useScrollTimeline = () => {
   useEffect(() => {
     const totalSections = 4;
 
-    // Create a virtual scroll track
     const scrollTrack = document.createElement('div');
     scrollTrack.style.height = `${totalSections * 100}vh`;
     scrollTrack.style.position = 'absolute';
-    scrollTrack.style.top = 0;
-    scrollTrack.style.left = 0;
+    scrollTrack.style.top = '0px';
+    scrollTrack.style.left = '0px';
     scrollTrack.style.width = '1px';
     scrollTrack.style.pointerEvents = 'none';
     document.body.appendChild(scrollTrack);
 
-    const tl = gsap.timeline({
+    gsap.to({}, {
       scrollTrigger: {
         trigger: scrollTrack,
         start: 'top top',
@@ -31,7 +30,6 @@ export const useScrollTimeline = () => {
         onUpdate: (self) => {
           setScrollProgress(self.progress);
 
-          // Calculate active section
           const sectionIndex = Math.min(
             Math.floor(self.progress * totalSections),
             totalSections - 1
@@ -43,7 +41,9 @@ export const useScrollTimeline = () => {
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
-      document.body.removeChild(scrollTrack);
+      if (document.body.contains(scrollTrack)) {
+        document.body.removeChild(scrollTrack);
+      }
     };
   }, [setActiveSection, setScrollProgress]);
 };

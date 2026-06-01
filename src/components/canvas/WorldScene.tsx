@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, Environment, Float } from '@react-three/drei';
+import { Environment } from '@react-three/drei';
 import { useStore } from '../../store/useStore';
 import { HeroSection } from './HeroSection';
 import { JourneySection } from './JourneySection';
@@ -8,7 +8,8 @@ import { AnatomySection } from './AnatomySection';
 import { HubSection } from './HubSection';
 
 export const WorldScene: React.FC = () => {
-  const activeSection = useStore((state) => state.activeSection);
+  // We remove the unused activeSection variable to satisfy TSC
+  useStore((state) => state.activeSection);
 
   return (
     <Canvas
@@ -33,17 +34,11 @@ export const WorldScene: React.FC = () => {
 
       <Suspense fallback={null}>
         <Environment preset="city" />
-
-        {/* We render all sections, but they are positioned in world-space
-            and animated via the global scroll progress. */}
         <HeroSection />
         <JourneySection />
         <AnatomySection />
         <HubSection />
       </Suspense>
-
-      {/* OrbitControls only for debugging, normally removed for scrollytelling */}
-      {/* <OrbitControls enableZoom={false} /> */}
     </Canvas>
   );
 };

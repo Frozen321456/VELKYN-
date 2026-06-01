@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useStore } from '../store/useStore';
+import { useStore } from '../../store/useStore';
 
 export const GlassCard: React.FC<{ id: string; title: string; content: string }> = ({ id, title, content }) => {
   const hoveredAssetId = useStore((state) => state.hoveredAssetId);
